@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/c/Users/barry/AppData/Local/Programs/Python/Python313/python /c/Users/barry/.claude/statusline.py)",
+      "Bash(python *)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}
