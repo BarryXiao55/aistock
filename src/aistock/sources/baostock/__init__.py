@@ -1,0 +1,1 @@
+"""Baostock data source plugin."""

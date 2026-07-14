@@ -1,0 +1,1 @@
+"""Aistock test suite."""

@@ -1,0 +1,21 @@
+# Aistock 品种配置
+# 定义支持的金融品种及其筛选条件
+
+stocks:
+  market: ["sh", "sz", "bj"]      # 沪/深/京
+  status: ["listed"]              # 仅上市状态（不含退市）
+
+indices:
+  codes: ["000001", "000300", "000905", "399001"]
+
+etf:
+  min_days: 120                   # 上市不足120天的不纳入
+
+convertible_bonds:
+  include_delisted: false
+
+futures:
+  exchanges: ["CFFEX", "SHFE", "DCE", "CZCE"]
+
+options:
+  exchanges: ["SSE", "SZSE"]

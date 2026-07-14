@@ -1,0 +1,59 @@
+# 数据源优先级配置
+# 按 Schema 类型定义降级链
+
+daily:
+  - name: akstock
+    priority: 100
+    config: {}
+  - name: baostock
+    priority: 80
+    config: {}
+  - name: tushare
+    priority: 50
+    config:
+      token: ${TUSHARE_TOKEN}
+
+minute:
+  - name: akstock
+    priority: 100
+    config: {}
+  - name: tushare
+    priority: 50
+    config:
+      token: ${TUSHARE_TOKEN}
+
+finance:
+  - name: akstock
+    priority: 100
+    config: {}
+  - name: tushare
+    priority: 80
+    config:
+      token: ${TUSHARE_TOKEN}
+
+alternative:
+  - name: akstock
+    priority: 100
+    config: {}
+  - name: tushare
+    priority: 50
+    config:
+      token: ${TUSHARE_TOKEN}
+
+north_flow:
+  - name: akstock
+    priority: 100
+    config: {}
+  - name: tushare
+    priority: 50
+    config:
+      token: ${TUSHARE_TOKEN}
+
+margin_trade:
+  - name: akstock
+    priority: 100
+    config: {}
+  - name: tushare
+    priority: 50
+    config:
+      token: ${TUSHARE_TOKEN}

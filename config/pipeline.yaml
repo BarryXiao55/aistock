@@ -1,0 +1,25 @@
+# 管道运行配置
+
+data_dir: "data"
+log_dir: "logs"
+
+retry:
+  max_attempts: 3
+  base_delay_s: 5.0
+  backoff_multiplier: 2
+
+timeout:
+  source_request_s: 60
+  pipeline_run_s: 600
+
+cleaner:
+  profile: "baseline"            # "baseline" | "advanced"
+
+storage:
+  backend: "parquet"
+  compression: "zstd"
+  compression_level: 3
+
+logging:
+  dir: "logs"
+  retention_days: 90
