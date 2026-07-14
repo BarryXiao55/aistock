@@ -1,0 +1,3 @@
+"""JQData data source plugin."""
+
+__version__ = "0.1.0"
