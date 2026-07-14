@@ -244,6 +244,9 @@ Phase 2 已完成，项目现在支持：
 - 内置 Alpha158 和 Alpha360 因子集，覆盖中国和美国市场
 - 支持公式化 Alpha 构建，使用表达式引擎（Ref、EMA、Mean、Rank 等算子）
 - DataHandlerLP 支持可学习处理器（MinMaxNorm、ZscoreNorm、CSZScoreNorm 等）
+- 标准接口模式：DataLoader → DataHandler → Dataset pipeline，基于 DataFrame I/O
+- 支持声明式因子计算配置（YAML），包含工具过滤、时间范围、处理器链
+- 支持自动每日数据更新（crontab），CSV/Parquet 到 .bin 转换管道
 
 **璇玑XUANJI**:
 - 采用七层架构（数据·因子·策略·回测·执行·风控·AI 自主调度）
@@ -254,6 +257,12 @@ Phase 2 已完成，项目现在支持：
 - 首个数据驱动的多智能体量化因子挖掘框架
 - 通过因子-模型联合优化实现约 2 倍年化收益率提升
 - 使用 70% 更少的因子达到更好效果
+- 自动化因子假设生成、实现和反馈循环
+
+**AI-Quant-Factor-Miner**:
+- 标准化因子函数接口：`function(df_raw, df_index) → DataFrame[SecuCode, TradingDay, FactorValue]`
+- 代码文件 (.py) 与数据文件 (.parquet) 物理分离
+- 使用 Parquet 存储因子数据
 
 **StockTrader-AI**:
 - 实现因子权重自进化机制：交易反馈→因子贡献分析→权重调整
