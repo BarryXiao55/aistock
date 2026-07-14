@@ -143,6 +143,7 @@ mypy src/
 - [Phase 2 设计评审](docs/PHASE2_DESIGN_REVIEW.md) - QualityScorer 和品种扩展设计
 - [Phase 2 测试报告](docs/PHASE2_TEST_REPORT.md) - 测试结果分析报告
 - [Phase 3 设计评审](docs/PHASE3_DESIGN_REVIEW.md) - CrossValidator、因子计算、数据源扩展
+- [Phase 3 开发计划](docs/PHASE3_DEVELOPMENT_PLAN.md) - 详细开发计划和里程碑
 - [设计文档](artifacts/specs/data-pipeline-design.md) - 详细的技术设计规格
 - [架构决策](artifacts/adr/001-plugin-pipeline-architecture.md) - 架构决策记录
 
