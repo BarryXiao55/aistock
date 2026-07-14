@@ -140,6 +140,7 @@ mypy src/
 
 - [功能说明文档](docs/FUNCTIONALITY.md) - 完整的功能说明、架构设计、配置指南
 - [因子计算层文档](docs/FACTORS.md) - 因子计算框架、36个因子、使用示例
+- [数据源文档](docs/DATA_SOURCES.md) - 6个数据源、配置指南、扩展指南
 - [设计目标达成评估](docs/DESIGN_REVIEW.md) - Phase 1 设计目标达成情况
 - [Phase 2 设计评审](docs/PHASE2_DESIGN_REVIEW.md) - QualityScorer 和品种扩展设计
 - [Phase 2 测试报告](docs/PHASE2_TEST_REPORT.md) - 测试结果分析报告

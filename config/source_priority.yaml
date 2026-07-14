@@ -84,3 +84,20 @@ options:
     priority: 80
     config:
       token: ${TUSHARE_TOKEN}
+
+# 新增数据源
+efinance:
+  - name: efinance
+    priority: 100
+    config: {}
+
+mootdx:
+  - name: mootdx
+    priority: 100
+    config: {}
+
+jqdata:
+  - name: jqdata
+    priority: 100
+    config:
+      token: ${JQDATA_TOKEN}
