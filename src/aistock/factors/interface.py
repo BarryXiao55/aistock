@@ -41,6 +41,7 @@ class FactorMetadata:
 
     def to_dict(self) -> dict:
         """转换为字典"""
+        import json
         return {
             "name": self.name,
             "description": self.description,
@@ -50,9 +51,9 @@ class FactorMetadata:
             "author": self.author,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
-            "tags": self.tags,
-            "data_requirements": self.data_requirements,
-            "parameters": self.parameters,
+            "tags": str(self.tags),
+            "data_requirements": str(self.data_requirements),
+            "parameters": json.dumps(self.parameters) if self.parameters else "{}",
         }
 
 
