@@ -66,3 +66,12 @@ convertible_bond:
     priority: 80
     config:
       token: ${TUSHARE_TOKEN}
+
+futures:
+  - name: akstock
+    priority: 100
+    config: {}
+  - name: tushare
+    priority: 80
+    config:
+      token: ${TUSHARE_TOKEN}
