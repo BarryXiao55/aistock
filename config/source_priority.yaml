@@ -57,3 +57,12 @@ margin_trade:
     priority: 50
     config:
       token: ${TUSHARE_TOKEN}
+
+convertible_bond:
+  - name: akstock
+    priority: 100
+    config: {}
+  - name: tushare
+    priority: 80
+    config:
+      token: ${TUSHARE_TOKEN}

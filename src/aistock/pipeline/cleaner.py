@@ -31,6 +31,7 @@ from aistock.cleaning.universal import UniversalCleaner
 from aistock.cleaning.adjustment import AdjustmentCleaner
 from aistock.cleaning.status import StatusCleaner
 from aistock.cleaning.validator import OHLCValidator
+from aistock.cleaning.convertible_bond import ConvertibleBondCleaner
 
 # B 级清洗步骤（基线）
 STEPS_BASELINE: list[CleaningStep] = [
@@ -38,6 +39,7 @@ STEPS_BASELINE: list[CleaningStep] = [
     AdjustmentCleaner(),     # 2. 复权处理（依赖步骤1的代码格式统一）
     StatusCleaner(),         # 3. 停牌/退市/ST 标记
     OHLCValidator(),         # 4. 基础 OHLC 校验
+    ConvertibleBondCleaner(), # 5. 可转债特定清洗
 ]
 
 # C 级清洗步骤（高级）- 目前与 B 级相同，后期扩展

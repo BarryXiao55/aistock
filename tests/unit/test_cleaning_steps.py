@@ -305,7 +305,7 @@ class TestSTEPS_BASELINE:
 
     def test_baseline_steps_are_defined(self):
         """测试基线步骤已定义"""
-        assert len(STEPS_BASELINE) == 4
+        assert len(STEPS_BASELINE) == 5
 
     def test_baseline_steps_are_cleaning_steps(self):
         """测试基线步骤都是 CleaningStep 实例"""
@@ -315,4 +315,4 @@ class TestSTEPS_BASELINE:
     def test_baseline_step_names(self):
         """测试基线步骤名称"""
         names = [step.name for step in STEPS_BASELINE]
-        assert names == ["universal", "adjustment", "status", "ohlc_validator"]
+        assert names == ["universal", "adjustment", "status", "ohlc_validator", "convertible_bond"]
