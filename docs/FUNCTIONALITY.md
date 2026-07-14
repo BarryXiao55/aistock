@@ -30,6 +30,10 @@ AkShare (优先级 100) → Baostock (优先级 80) → Tushare (优先级 50)
 | AdjustmentCleaner | 前复权价格对齐 | 处理复权因子 |
 | StatusCleaner | ST、停牌状态标记 | 自动识别 ST 股票 |
 | OHLCValidator | OHLC 校验 | 检查 high≥low、价格非负 |
+| ConvertibleBondCleaner | 可转债特定清洗 | 转股价值、溢价率计算 |
+| FuturesCleaner | 期货特定清洗 | 主力合约、交割月标记 |
+| OptionsCleaner | 期权特定清洗 | 实值/虚值、希腊字母 |
+| QualityScorer | 数据质量评分 | 4 维度评分 (A/B/C/D) |
 
 ### 4. Parquet 存储
 
@@ -56,6 +60,9 @@ AkShare (优先级 100) → Baostock (优先级 80) → Tushare (优先级 50)
 | MarginTradeSchema | 融资融券 | year / month |
 | AlternativeSchema | 另类数据 | sub_type / year / month |
 | ReferenceSchema | 品种参考 | 无分区 |
+| ConvertibleBondSchema | 可转债 | asset_type (cb) / year / month |
+| FuturesSchema | 期货 | asset_type (future) / exchange / year / month |
+| OptionsSchema | 期权 | asset_type (option) / underlying / option_type / year / month |
 
 ## CLI 命令
 

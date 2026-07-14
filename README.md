@@ -141,6 +141,7 @@ mypy src/
 - [功能说明文档](docs/FUNCTIONALITY.md) - 完整的功能说明、架构设计、配置指南
 - [设计目标达成评估](docs/DESIGN_REVIEW.md) - Phase 1 设计目标达成情况
 - [Phase 2 设计评审](docs/PHASE2_DESIGN_REVIEW.md) - QualityScorer 和品种扩展设计
+- [Phase 2 测试报告](docs/PHASE2_TEST_REPORT.md) - 测试结果分析报告
 - [设计文档](artifacts/specs/data-pipeline-design.md) - 详细的技术设计规格
 - [架构决策](artifacts/adr/001-plugin-pipeline-architecture.md) - 架构决策记录
 
