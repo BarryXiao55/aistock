@@ -33,6 +33,7 @@ from aistock.cleaning.status import StatusCleaner
 from aistock.cleaning.validator import OHLCValidator
 from aistock.cleaning.convertible_bond import ConvertibleBondCleaner
 from aistock.cleaning.futures import FuturesCleaner
+from aistock.cleaning.options import OptionsCleaner
 
 # B 级清洗步骤（基线）
 STEPS_BASELINE: list[CleaningStep] = [
@@ -42,6 +43,7 @@ STEPS_BASELINE: list[CleaningStep] = [
     OHLCValidator(),         # 4. 基础 OHLC 校验
     ConvertibleBondCleaner(), # 5. 可转债特定清洗
     FuturesCleaner(),        # 6. 期货特定清洗
+    OptionsCleaner(),        # 7. 期权特定清洗
 ]
 
 # C 级清洗步骤（高级）- 目前与 B 级相同，后期扩展

@@ -12,6 +12,7 @@ from aistock.schemas.alternative import (
 from aistock.schemas.reference import ReferenceSchema
 from aistock.schemas.convertible_bond import ConvertibleBondSchema
 from aistock.schemas.futures import FuturesSchema
+from aistock.schemas.options import OptionsSchema
 
 SCHEMA_REGISTRY: dict[str, type] = {
     "daily": StockDailySchema,
@@ -23,6 +24,7 @@ SCHEMA_REGISTRY: dict[str, type] = {
     "reference": ReferenceSchema,
     "convertible_bond": ConvertibleBondSchema,
     "futures": FuturesSchema,
+    "options": OptionsSchema,
 }
 
 __all__ = [
@@ -35,6 +37,7 @@ __all__ = [
     "ReferenceSchema",
     "ConvertibleBondSchema",
     "FuturesSchema",
+    "OptionsSchema",
     "ALTERNATIVE_SCHEMA_MAP",
     "SCHEMA_REGISTRY",
 ]
