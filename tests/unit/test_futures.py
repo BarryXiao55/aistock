@@ -26,6 +26,7 @@ class TestFuturesSchema:
             "settle": 4015.0,
             "volume": 100000,
             "open_interest": 50000,
+            "exchange": "CFFEX",
             "margin_rate": 12.0,
             "contract_multiplier": 300,
         }])
@@ -53,6 +54,7 @@ class TestFuturesSchema:
             "settle": 4015.0,
             "volume": 100000,
             "open_interest": 50000,
+            "exchange": "CFFEX",
         }])
         issues = FuturesSchema.validate(df)
         assert any("high" in i.lower() and "low" in i.lower() for i in issues)
@@ -69,6 +71,7 @@ class TestFuturesSchema:
             "settle": 4015.0,
             "volume": 100000,
             "open_interest": 50000,
+            "exchange": "CFFEX",
         }])
         issues = FuturesSchema.validate(df)
         assert any("Negative" in i for i in issues)
@@ -85,6 +88,7 @@ class TestFuturesSchema:
             "settle": 4015.0,
             "volume": -100000,
             "open_interest": 50000,
+            "exchange": "CFFEX",
         }])
         issues = FuturesSchema.validate(df)
         assert any("volume" in i.lower() for i in issues)
@@ -101,6 +105,7 @@ class TestFuturesSchema:
             "settle": 4015.0,
             "volume": 100000,
             "open_interest": -50000,
+            "exchange": "CFFEX",
         }])
         issues = FuturesSchema.validate(df)
         assert any("open_interest" in i.lower() for i in issues)
@@ -117,6 +122,7 @@ class TestFuturesSchema:
             "settle": 4015.0,
             "volume": 100000,
             "open_interest": 50000,
+            "exchange": "CFFEX",
             "margin_rate": 150.0,  # 超过 100%
         }])
         issues = FuturesSchema.validate(df)

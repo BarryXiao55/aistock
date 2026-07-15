@@ -81,10 +81,15 @@ class OptionsSchema:
     @staticmethod
     def partition_values(df: pd.DataFrame) -> dict:
         """从数据列提取分区键值"""
+        if df.empty:
+            return {"asset_type": "option", "underlying": "unknown", "option_type": "call", "year": "1970", "month": "01"}
+        td = df["trade_date"].iloc[0]
+        if isinstance(td, str):
+            td = pd.to_datetime(td).date()
         return {
             "asset_type": "option",
             "underlying": str(df["underlying"].iloc[0]),
             "option_type": str(df["option_type"].iloc[0]),
-            "year": str(df["trade_date"].iloc[0].year),
-            "month": str(df["trade_date"].iloc[0].month).zfill(2),
+            "year": str(td.year),
+            "month": str(td.month).zfill(2),
         }

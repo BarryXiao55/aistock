@@ -98,7 +98,7 @@ class PipelineRunner:
                     ),
                 )
 
-            except (SourceUnavailable, SourceRateLimited, CleanError) as e:
+            except (SourceUnavailable, SourceRateLimited, CleanError, ValueError) as e:
                 self._ctx.log.warning(f"source [{source.name}] failed: {e}, falling back")
                 continue
             except StoreError:

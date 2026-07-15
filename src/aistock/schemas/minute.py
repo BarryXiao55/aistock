@@ -40,7 +40,11 @@ class StockMinuteSchema:
     @staticmethod
     def partition_values(df: pd.DataFrame) -> dict:
         """从数据列提取分区键值"""
+        if df.empty:
+            return {"asset_type": "stock", "frequency": "daily", "year": "1970", "month": "01"}
         dt = df["trade_time"].iloc[0]
+        if isinstance(dt, str):
+            dt = pd.to_datetime(dt)
         return {
             "asset_type": str(df["asset_type"].iloc[0]),
             "frequency": str(df["frequency"].iloc[0]),

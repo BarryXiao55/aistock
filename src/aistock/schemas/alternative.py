@@ -29,7 +29,11 @@ class NorthFlowSchema:
     @staticmethod
     def partition_values(df: pd.DataFrame) -> dict:
         """从数据列提取分区键值"""
+        if df.empty:
+            return {"year": "1970", "month": "01"}
         d = df["trade_date"].iloc[0]
+        if isinstance(d, str):
+            d = pd.to_datetime(d).date()
         return {"year": str(d.year), "month": str(d.month).zfill(2)}
 
 
@@ -57,7 +61,11 @@ class MarginTradeSchema:
     @staticmethod
     def partition_values(df: pd.DataFrame) -> dict:
         """从数据列提取分区键值"""
+        if df.empty:
+            return {"year": "1970", "month": "01"}
         d = df["trade_date"].iloc[0]
+        if isinstance(d, str):
+            d = pd.to_datetime(d).date()
         return {"year": str(d.year), "month": str(d.month).zfill(2)}
 
 
@@ -83,7 +91,11 @@ class AlternativeSchema:
     @staticmethod
     def partition_values(df: pd.DataFrame) -> dict:
         """从数据列提取分区键值"""
+        if df.empty:
+            return {"sub_type": "unknown", "year": "1970", "month": "01"}
         d = df["trade_date"].iloc[0]
+        if isinstance(d, str):
+            d = pd.to_datetime(d).date()
         return {
             "sub_type": str(df["sub_type"].iloc[0]),
             "year": str(d.year),

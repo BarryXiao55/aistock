@@ -35,7 +35,7 @@ class FuturesSchema:
         issues = []
         required = {
             "code", "trade_date", "open", "high", "low", "close",
-            "settle", "volume", "open_interest"
+            "settle", "volume", "open_interest", "exchange"
         }
         missing = required - set(df.columns)
         if missing:
@@ -70,9 +70,14 @@ class FuturesSchema:
     @staticmethod
     def partition_values(df: pd.DataFrame) -> dict:
         """从数据列提取分区键值"""
+        if df.empty:
+            return {"asset_type": "future", "exchange": "SHF", "year": "1970", "month": "01"}
+        td = df["trade_date"].iloc[0]
+        if isinstance(td, str):
+            td = pd.to_datetime(td).date()
         return {
             "asset_type": "future",
             "exchange": str(df["exchange"].iloc[0]),
-            "year": str(df["trade_date"].iloc[0].year),
-            "month": str(df["trade_date"].iloc[0].month).zfill(2),
+            "year": str(td.year),
+            "month": str(td.month).zfill(2),
         }

@@ -38,8 +38,8 @@ class TuShareOptionsSource(SourceNode):
 
         for code in codes:
             try:
-                # 转换代码格式
-                ts_code = f"{code}.UNKNOWN"
+                # 转换代码格式 - 根据期权代码推断交易所
+                ts_code = self._map_exchange(code)
 
                 # 调用 API
                 df = self._client.get_options_daily(
@@ -78,6 +78,24 @@ class TuShareOptionsSource(SourceNode):
     def _get_all_codes(self, asset_type: str) -> list[str]:
         """获取指定资产类型的所有代码"""
         return []
+
+    @staticmethod
+    def _map_exchange(code: str) -> str:
+        """根据期权代码推断交易所后缀
+
+        Tushare 期权格式: 10005867.SSE (上交所), 90003688.SZSE (深交所)
+        """
+        # 已经带后缀的直接返回
+        if "." in code:
+            return code
+
+        # 8位数字期权代码: 上交所 10xxxxxx, 深交所 9xxxxxxx
+        if code.startswith("10") and len(code) == 8:
+            return f"{code}.SSE"
+        elif code.startswith("9") and len(code) == 8:
+            return f"{code}.SZSE"
+        else:
+            return f"{code}.SSE"  # 默认上交所
 
     def check_health(self) -> bool:
         """健康检查"""

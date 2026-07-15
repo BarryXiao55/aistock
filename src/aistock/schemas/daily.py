@@ -45,8 +45,13 @@ class StockDailySchema:
     @staticmethod
     def partition_values(df: pd.DataFrame) -> dict:
         """从数据列提取分区键值"""
+        if df.empty:
+            return {"asset_type": "stock", "year": "1970", "month": "01"}
+        trade_date = df["trade_date"].iloc[0]
+        if isinstance(trade_date, str):
+            trade_date = pd.to_datetime(trade_date).date()
         return {
             "asset_type": str(df["asset_type"].iloc[0]),
-            "year": str(df["trade_date"].iloc[0].year),
-            "month": str(df["trade_date"].iloc[0].month).zfill(2),
+            "year": str(trade_date.year),
+            "month": str(trade_date.month).zfill(2),
         }

@@ -51,6 +51,8 @@ class FinanceSchema:
     @staticmethod
     def partition_values(df: pd.DataFrame) -> dict:
         """从数据列提取分区键值"""
+        if df.empty:
+            return {"asset_type": "stock", "report_period": "1970Q1"}
         return {
             "asset_type": "stock",
             "report_period": str(df["report_period"].iloc[0]),

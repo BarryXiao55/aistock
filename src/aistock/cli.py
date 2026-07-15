@@ -122,9 +122,18 @@ def fetch(asset_type, schema_name, codes, start_date, end_date, frequency):
     config = load_config()
     source_cfg = load_source_config()
 
+    valid_asset_types = {"stock", "index", "etf", "cb", "future", "option"}
+    if asset_type not in valid_asset_types:
+        click.echo(f"Invalid asset-type: '{asset_type}'. Must be one of: {', '.join(sorted(valid_asset_types))}", err=True)
+        sys.exit(1)
+
     # 解析参数
-    start = datetime.strptime(start_date, "%Y-%m-%d").date()
-    end = datetime.strptime(end_date, "%Y-%m-%d").date() if end_date else date.today()
+    try:
+        start = datetime.strptime(start_date, "%Y-%m-%d").date()
+        end = datetime.strptime(end_date, "%Y-%m-%d").date() if end_date else date.today()
+    except ValueError:
+        click.echo(f"Invalid date format: '{start_date}' or '{end_date}'. Use YYYY-MM-DD.", err=True)
+        sys.exit(1)
     code_list = codes.split(",") if codes else None
 
     # 获取 Schema 类

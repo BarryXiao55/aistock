@@ -38,8 +38,8 @@ class TuShareFuturesSource(SourceNode):
 
         for code in codes:
             try:
-                # 转换代码格式
-                ts_code = f"{code}.UNKNOWN"  # Tushare 需要交易所后缀
+                # 转换代码格式 - 根据合约代码推断交易所
+                ts_code = self._map_exchange(code)
 
                 # 调用 API
                 df = self._client.get_futures_daily(
@@ -77,6 +77,43 @@ class TuShareFuturesSource(SourceNode):
     def _get_all_codes(self, asset_type: str) -> list[str]:
         """获取指定资产类型的所有代码"""
         return []
+
+    @staticmethod
+    def _map_exchange(code: str) -> str:
+        """根据合约代码推断交易所后缀
+
+        Tushare 期货格式: IF2501.CFE, cu2501.SHF, m2501.DCE, SR501.CZC
+        """
+        # 已经带后缀的直接返回
+        if "." in code:
+            parts = code.split(".")
+            if len(parts) == 2 and len(parts[1]) == 3:
+                return code
+
+        # 根据合约代码前缀推断交易所
+        prefix = code.rstrip("0123456789").lower() if code else ""
+
+        exchange_map = {
+            # CFFEX (中金所)
+            "if": "CFE", "ic": "CFE", "ih": "CFE", "im": "CFE", "tf": "CFE", "t": "CFE", "ts": "CFE",
+            # SHFE (上期所)
+            "cu": "SHF", "al": "SHF", "zn": "SHF", "pb": "SHF", "ni": "SHF", "sn": "SHF",
+            "au": "SHF", "ag": "SHF", "rb": "SHF", "hc": "SHF", "ss": "SHF", "bu": "SHF",
+            "ru": "SHF", "fu": "SHF", "sp": "SHF", "nr": "SHF", "lu": "SHF", "bc": "SHF",
+            # DCE (大商所)
+            "m": "DCE", "y": "DCE", "p": "DCE", "c": "DCE", "cs": "DCE", "a": "DCE",
+            "b": "DCE", "jd": "DCE", "l": "DCE", "v": "DCE", "pp": "DCE", "j": "DCE",
+            "jm": "DCE", "i": "DCE", "eg": "DCE", "eb": "DCE", "pg": "DCE", "lh": "DCE",
+            # CZC (郑商所)
+            "sr": "CZC", "cf": "CZC", "ta": "CZC", "ma": "CZC", "oi": "CZC", "rm": "CZC",
+            "fg": "CZC", "sa": "CZC", "ur": "CZC", "ap": "CZC", "cj": "CZC", "pf": "CZC",
+            "pk": "CZC", "sh": "CZC", "si": "CZC",
+            # INE (上期能源)
+            "sc": "INE", "lu": "INE", "nr": "INE", "bc": "INE",
+        }
+
+        exchange = exchange_map.get(prefix, "SHF")  # 默认上期所
+        return f"{code}.{exchange}"
 
     def check_health(self) -> bool:
         """健康检查"""
