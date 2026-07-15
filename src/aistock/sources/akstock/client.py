@@ -63,12 +63,16 @@ class AkStockClient:
         start_date: str,
         end_date: str,
     ) -> pd.DataFrame:
-        """获取指数日线数据"""
+        """获取指数日线数据 (东方财富 API，支持日期过滤)"""
         ak = self._get_akshare()
 
         for attempt in range(self._retry_count):
             try:
-                df = ak.stock_zh_index_daily(symbol=f"sh{code}")
+                df = ak.stock_zh_index_daily_em(
+                    symbol=f"sh{code}",
+                    start_date=start_date.replace("-", ""),
+                    end_date=end_date.replace("-", ""),
+                )
                 return df
             except Exception as e:
                 error_msg = str(e).lower()
@@ -86,12 +90,17 @@ class AkStockClient:
         start_date: str,
         end_date: str,
     ) -> pd.DataFrame:
-        """获取 ETF 日线数据"""
+        """获取 ETF 日线数据 (东方财富 API，支持日期过滤)"""
         ak = self._get_akshare()
 
         for attempt in range(self._retry_count):
             try:
-                df = ak.fund_etf_hist_sina(symbol=f"sz{code}")
+                df = ak.fund_etf_hist_em(
+                    symbol=code,
+                    period="daily",
+                    start_date=start_date.replace("-", ""),
+                    end_date=end_date.replace("-", ""),
+                )
                 return df
             except Exception as e:
                 error_msg = str(e).lower()

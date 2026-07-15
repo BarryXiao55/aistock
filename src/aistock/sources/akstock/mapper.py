@@ -5,7 +5,7 @@ import pandas as pd
 from aistock.schemas.daily import StockDailySchema
 
 
-# AkShare 日线数据列名映射
+# AkShare 日线数据列名映射 (东方财富中文列名)
 AKSTOCK_DAILY_COLUMN_MAP = {
     "日期": "trade_date",
     "开盘": "open",
@@ -20,6 +20,17 @@ AKSTOCK_DAILY_COLUMN_MAP = {
     "换手率": "turnover",
 }
 
+# 指数日线数据列名映射 (东方财富英文列名)
+INDEX_DAILY_COLUMN_MAP = {
+    "date": "trade_date",
+    "open": "open",
+    "close": "close",
+    "high": "high",
+    "low": "low",
+    "volume": "volume",
+    "amount": "amount",
+}
+
 
 def map_daily_columns(df: pd.DataFrame) -> pd.DataFrame:
     """映射日线数据列名"""
@@ -30,6 +41,18 @@ def map_daily_columns(df: pd.DataFrame) -> pd.DataFrame:
         df["trade_date"] = pd.to_datetime(df["trade_date"]).dt.date
 
     # 添加 asset_type 列
+    df["asset_type"] = "stock"
+
+    return df
+
+
+def map_index_daily_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """映射指数日线数据列名 (东方财富返回英文列名)"""
+    df = df.rename(columns=INDEX_DAILY_COLUMN_MAP)
+
+    if "trade_date" in df.columns:
+        df["trade_date"] = pd.to_datetime(df["trade_date"]).dt.date
+
     df["asset_type"] = "stock"
 
     return df

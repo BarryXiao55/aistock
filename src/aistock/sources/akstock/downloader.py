@@ -8,7 +8,7 @@ from aistock.schemas.daily import StockDailySchema
 from aistock.schemas.minute import StockMinuteSchema
 from aistock.schemas.finance import FinanceSchema
 from aistock.sources.akstock.client import AkStockClient
-from aistock.sources.akstock.mapper import map_daily_columns, unify_code
+from aistock.sources.akstock.mapper import map_daily_columns, map_index_daily_columns, unify_code
 
 
 class AkStockSource(SourceNode):
@@ -41,7 +41,7 @@ class AkStockSource(SourceNode):
             raise ValueError(f"Unsupported schema: {spec.schema}")
 
     def _fetch_daily(self, spec: FetchSpec) -> pd.DataFrame:
-        """下载日线数据"""
+        """下载日线数据（根据 asset_type 路由到不同 API）"""
         all_dfs = []
 
         # 确定要下载的代码列表
@@ -52,20 +52,32 @@ class AkStockSource(SourceNode):
                 # 统一代码格式
                 raw_code = code.split(".")[0] if "." in code else code
 
-                # 调用 API
-                df = self._client.get_stock_daily(
-                    code=raw_code,
-                    start_date=spec.start_date.strftime("%Y%m%d"),
-                    end_date=spec.end_date.strftime("%Y%m%d"),
-                )
-
-                if df is not None and not df.empty:
-                    # 映射列名
+                # 根据 asset_type 调用不同 API
+                if spec.asset_type == "index":
+                    df = self._client.get_index_daily(
+                        code=raw_code,
+                        start_date=spec.start_date.strftime("%Y-%m-%d"),
+                        end_date=spec.end_date.strftime("%Y-%m-%d"),
+                    )
+                    df = map_index_daily_columns(df)
+                elif spec.asset_type == "etf":
+                    df = self._client.get_etf_daily(
+                        code=raw_code,
+                        start_date=spec.start_date.strftime("%Y-%m-%d"),
+                        end_date=spec.end_date.strftime("%Y-%m-%d"),
+                    )
+                    df = map_daily_columns(df)
+                else:
+                    df = self._client.get_stock_daily(
+                        code=raw_code,
+                        start_date=spec.start_date.strftime("%Y%m%d"),
+                        end_date=spec.end_date.strftime("%Y%m%d"),
+                    )
                     df = map_daily_columns(df)
 
+                if df is not None and not df.empty:
                     # 添加代码列
                     df["code"] = unify_code(raw_code)
-
                     all_dfs.append(df)
 
             except Exception as e:
