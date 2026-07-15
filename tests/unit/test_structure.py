@@ -10,7 +10,7 @@ class TestProjectStructure:
         """测试 aistock 包可以导入"""
         import aistock
 
-        assert aistock.__version__ == "0.1.0"
+        assert aistock.__version__ == "1.0.0"
 
     def test_import_exceptions(self):
         """测试异常模块可以导入"""
