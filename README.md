@@ -4,9 +4,11 @@ AI-powered A-share market data pipeline.
 
 ## Features
 
-- **Multi-source data collection**: AkShare, Baostock, Tushare
+- **Multi-source data collection**: AkShare, Baostock, Tushare, EFinance, Mootdx, JQData
 - **Automatic fallback chain**: Primary → Backup → Optional
-- **B-level data cleaning**: Dedup, null handling, forward adjustment, OHLC validation
+- **B-level data cleaning**: 8 cleaning steps (dedup, null handling, adjustment, OHLC validation, quality scoring, etc.)
+- **Cross-source validation**: CrossValidator with 8 validation rules, record linkage, diff detection, conflict resolution
+- **Factor calculation**: 36 quantitative factors (technical, fundamental, alternative)
 - **Parquet storage**: Columnar format with partitioning
 - **Structured JSON logging**: Task-level observability
 - **SQLite task metadata**: Pipeline run tracking
@@ -44,16 +46,30 @@ aistock/
 │   ├── __init__.py
 │   ├── exceptions.py          # 9 exception classes
 │   ├── cli.py                 # CLI entry point
-│   ├── schemas/               # 6 data models
+│   ├── schemas/               # 10 data models
 │   ├── pipeline/              # Pipeline framework
-│   ├── sources/               # 3 data source plugins
-│   ├── cleaning/              # 4 cleaning steps
+│   ├── sources/               # 6 data source plugins
+│   │   ├── akstock/           # AkShare (主力)
+│   │   ├── baostock/          # Baostock (备份)
+│   │   ├── tushare/           # Tushare (可选)
+│   │   ├── efinance/          # EFinance (东方财富)
+│   │   ├── mootdx/            # Mootdx (通达信)
+│   │   └── jqdata/            # JQData (聚宽)
+│   ├── cleaning/              # 8 cleaning steps
+│   ├── validation/            # CrossValidator (rules, linkage, diff, resolver, reporting)
+│   ├── factors/               # Factor calculation layer (36 factors)
+│   │   ├── technical/         # 12 technical factors
+│   │   ├── fundamental/       # 15 fundamental factors
+│   │   ├── alternative/       # 9 alternative factors
+│   │   ├── storage/           # Factor storage and query
+│   │   └── analysis/          # Factor analysis and optimization
 │   ├── storage/               # Parquet backend
 │   └── observability/         # Logging & tracing
 ├── tests/
-│   ├── unit/                  # Unit tests
-│   └── integration/           # Integration tests
+│   ├── unit/                  # 306 unit tests
+│   └── integration/           # 24 integration tests
 ├── config/                    # Configuration files
+├── docs/                      # Documentation
 └── artifacts/                 # Design documents
 ```
 
@@ -99,6 +115,10 @@ daily:
 CLI → PipelineRunner → SourceNode → Cleaner → StorageBackend
                           ↓            ↓           ↓
                      SourceRegistry  STEPS     ParquetBackend
+                          ↓
+                     CrossValidator
+                          ↓
+                     FactorEngine
 ```
 
 ### Data Flow
@@ -141,10 +161,12 @@ mypy src/
 - [功能说明文档](docs/FUNCTIONALITY.md) - 完整的功能说明、架构设计、配置指南
 - [因子计算层文档](docs/FACTORS.md) - 因子计算框架、36个因子、使用示例
 - [数据源文档](docs/DATA_SOURCES.md) - 6个数据源、配置指南、扩展指南
+- [测试报告](docs/TEST_REPORT.md) - 完整测试报告（404个测试）
+- [项目总结报告](docs/PROJECT_SUMMARY.md) - 项目总结、开发历程、技术架构
 - [Phase 3 开发过程记录](docs/sprints/README.md) - 16个Sprint的开发过程记录
 - [设计目标达成评估](docs/DESIGN_REVIEW.md) - Phase 1 设计目标达成情况
 - [Phase 2 设计评审](docs/PHASE2_DESIGN_REVIEW.md) - QualityScorer 和品种扩展设计
-- [Phase 2 测试报告](docs/PHASE2_TEST_REPORT.md) - 测试结果分析报告
+- [Phase 2 测试报告](docs/PHASE2_TEST_REPORT.md) - Phase 2 测试结果分析
 - [Phase 3 设计评审](docs/PHASE3_DESIGN_REVIEW.md) - CrossValidator、因子计算、数据源扩展
 - [Phase 3 开发计划](docs/PHASE3_DEVELOPMENT_PLAN.md) - 详细开发计划和里程碑
 - [设计文档](artifacts/specs/data-pipeline-design.md) - 详细的技术设计规格
