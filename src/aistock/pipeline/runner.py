@@ -40,6 +40,9 @@ class PipelineRunner:
 
         for source in self._registry.get_all(spec.asset_type, spec.schema):
             try:
+                # 注入上下文，使 downloader 可以访问日志
+                source.ctx = self._ctx
+
                 if not source.check_health():
                     self._ctx.log.info(f"source [{source.name}] unhealthy, skipping")
                     continue

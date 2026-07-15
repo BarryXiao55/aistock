@@ -66,7 +66,7 @@ class TuShareFuturesSource(SourceNode):
                     all_dfs.append(df)
 
             except Exception as e:
-                print(f"Failed to fetch futures {code}: {e}")
+                self.ctx.log.warning(f"Failed to fetch futures {code}: {e}")
                 continue
 
         if not all_dfs:

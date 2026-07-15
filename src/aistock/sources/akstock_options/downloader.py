@@ -63,7 +63,7 @@ class AkStockOptionsSource(SourceNode):
                     all_dfs.append(df)
 
             except Exception as e:
-                print(f"Failed to fetch options {code}: {e}")
+                self.ctx.log.warning(f"Failed to fetch options {code}: {e}")
                 continue
 
         if not all_dfs:

@@ -60,7 +60,7 @@ class BaoStockSource(SourceNode):
                     all_dfs.append(df)
 
             except Exception as e:
-                print(f"Failed to fetch {code}: {e}")
+                self.ctx.log.warning(f"Failed to fetch {code}: {e}")
                 continue
 
         if not all_dfs:

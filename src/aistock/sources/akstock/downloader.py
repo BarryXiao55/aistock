@@ -70,7 +70,7 @@ class AkStockSource(SourceNode):
 
             except Exception as e:
                 # 记录错误但继续处理其他代码
-                print(f"Failed to fetch {code}: {e}")
+                self.ctx.log.warning(f"Failed to fetch {code}: {e}")
                 continue
 
         if not all_dfs:
@@ -94,7 +94,7 @@ class AkStockSource(SourceNode):
                     all_dfs.append(df)
 
             except Exception as e:
-                print(f"Failed to fetch finance for {code}: {e}")
+                self.ctx.log.warning(f"Failed to fetch finance for {code}: {e}")
                 continue
 
         if not all_dfs:

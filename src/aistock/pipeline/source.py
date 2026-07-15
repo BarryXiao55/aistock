@@ -14,6 +14,7 @@ class SourceNode(ABC):
     name: str = ""
     retry_max: int = 3
     retry_delay_s: float = 5.0
+    _ctx = None  # 由 PipelineRunner 在 fetch 前注入
 
     @abstractmethod
     def supports(self, asset_type: str, schema: type) -> bool:
@@ -41,3 +42,11 @@ class SourceNode(ABC):
     def check_health(self) -> bool:
         """健康检查：数据源当前是否可连通"""
         return True
+
+    @property
+    def ctx(self):
+        return self._ctx
+
+    @ctx.setter
+    def ctx(self, value):
+        self._ctx = value
