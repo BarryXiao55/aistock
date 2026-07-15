@@ -62,7 +62,11 @@ class PipelineRunner:
                 issues_overall.extend(clean_issues)
 
                 # 4. Write
-                result = self._store.write(df, spec.schema, spec.schema.partition_values(df))
+                if df.empty:
+                    result_records = 0
+                else:
+                    result = self._store.write(df, spec.schema, spec.schema.partition_values(df))
+                    result_records = result.records_written
 
                 # 5. 判断成功/部分成功
                 if spec.codes is not None:
@@ -85,7 +89,7 @@ class PipelineRunner:
                     status=status,
                     records_fetched=records_fetched,
                     records_after_clean=len(df),
-                    records_written=result.records_written,
+                    records_written=result_records,
                     duration_ms=int((time.monotonic() - start_time) * 1000),
                     issues=issues_overall,
                     failed_codes=failed_codes,

@@ -59,8 +59,22 @@ class ParquetBackend(StorageBackend):
         try:
             schema = query.schema
             partition_keys = query.partition_keys or {}
+            schema_name = schema.__name__
 
-            if partition_keys:
+            # 确定该 schema 需要哪些分区键
+            required_keys: list[str] = []
+            if schema_name in ("StockDailySchema", "StockMinuteSchema"):
+                required_keys = ["asset_type", "year", "month"]
+            elif schema_name == "FinanceSchema":
+                required_keys = ["report_period"]
+            elif schema_name in ("NorthFlowSchema", "MarginTradeSchema"):
+                required_keys = ["year", "month"]
+            elif schema_name == "AlternativeSchema":
+                required_keys = ["year", "month"]
+
+            has_all_keys = partition_keys and all(k in partition_keys for k in required_keys)
+
+            if has_all_keys:
                 # 精确分区命中
                 file_path = get_file_path(self._base_dir, schema, partition_keys)
                 if not file_path.exists():
@@ -68,13 +82,19 @@ class ParquetBackend(StorageBackend):
 
                 df = pd.read_parquet(file_path)
             else:
-                # 扫描目录
-                partition_path = get_partition_path(self._base_dir, schema, partition_keys)
-                if not partition_path.exists():
+                # 扫描目录（部分或无分区键）
+                # 从已有键构建部分路径，递归扫描
+                base = self._base_dir
+                if "asset_type" in partition_keys:
+                    base = base / partition_keys["asset_type"]
+                if schema_name == "StockMinuteSchema" and "frequency" in partition_keys:
+                    base = base / partition_keys["frequency"]
+
+                if not base.exists():
                     return pd.DataFrame()
 
                 dfs = []
-                for parquet_file in partition_path.rglob("*.parquet"):
+                for parquet_file in base.rglob("*.parquet"):
                     dfs.append(pd.read_parquet(parquet_file))
 
                 if not dfs:

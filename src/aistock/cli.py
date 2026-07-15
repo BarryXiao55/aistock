@@ -225,7 +225,7 @@ def update(asset_type, schema_name):
     store = get_backend(config)
     from aistock.storage.query import QuerySpec
 
-    query = QuerySpec(schema=schema_cls)
+    query = QuerySpec(schema=schema_cls, partition_keys={"asset_type": asset_type})
     df = store.read(query)
 
     if df.empty:
