@@ -1,12 +1,12 @@
-# 卸载 Aistock 每日更新计划任务
-# 以管理员身份运行此脚本
+# Uninstall Aistock daily update scheduled task
+# Run as Administrator
 
 $taskName = "AistockDailyUpdate"
 
 $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 if ($task) {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
-    Write-Host "计划任务 '$taskName' 已删除" -ForegroundColor Green
+    Write-Host "Task '$taskName' removed" -ForegroundColor Green
 } else {
-    Write-Host "计划任务 '$taskName' 不存在" -ForegroundColor Yellow
+    Write-Host "Task '$taskName' not found" -ForegroundColor Yellow
 }
