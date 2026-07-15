@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -26,7 +27,6 @@ class LimitUpCountFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算涨停板数量因子"""
-        import time
         start_time = time.time()
 
         if "pct_change" not in data.columns:
@@ -74,7 +74,6 @@ class LimitDownCountFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算跌停板数量因子"""
-        import time
         start_time = time.time()
 
         if "pct_change" not in data.columns:
@@ -121,7 +120,6 @@ class AdvanceDeclineRatioFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算涨跌比因子"""
-        import time
         start_time = time.time()
 
         if "pct_change" not in data.columns:
@@ -175,7 +173,6 @@ class MarketBreadthFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算市场广度因子"""
-        import time
         start_time = time.time()
 
         if "pct_change" not in data.columns:
@@ -236,7 +233,6 @@ class VolatilityIndexFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算波动率指数因子"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:

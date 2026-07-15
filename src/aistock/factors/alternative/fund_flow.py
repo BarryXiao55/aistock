@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -26,7 +27,6 @@ class NorthFlowNetFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算北向资金净流入因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["buy_amount", "sell_amount"]
@@ -85,7 +85,6 @@ class NorthFlowMomentumFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算北向资金动量因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["buy_amount", "sell_amount"]
@@ -141,7 +140,6 @@ class MarginBalanceChangeFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算融资余额变化因子"""
-        import time
         start_time = time.time()
 
         if "margin_balance" not in data.columns:
@@ -188,7 +186,6 @@ class MarginRatioFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算融资融券比率因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["margin_balance", "short_balance"]

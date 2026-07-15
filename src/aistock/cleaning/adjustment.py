@@ -22,6 +22,11 @@ class AdjustmentCleaner(CleaningStep):
             ctx.log.warning("Found zero adj_factor values, replacing with 1.0")
             df["adj_factor"] = df["adj_factor"].replace(0, 1.0)
 
+        # NaN 复权因子视为无复权
+        if df["adj_factor"].isna().any():
+            ctx.log.warning("Found NaN adj_factor values, replacing with 1.0")
+            df["adj_factor"] = df["adj_factor"].fillna(1.0)
+
         # 计算前复权价格
         # 前复权价格 = 原始价格 * (当前复权因子 / 基准复权因子)
         # 这里假设 adj_factor 已经是相对于最新日期的复权因子

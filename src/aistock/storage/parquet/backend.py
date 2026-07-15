@@ -154,5 +154,5 @@ class ParquetBackend(StorageBackend):
         try:
             file_path = get_file_path(self._base_dir, schema, partition_keys)
             return file_path.exists()
-        except Exception:
+        except (FileNotFoundError, KeyError):
             return False

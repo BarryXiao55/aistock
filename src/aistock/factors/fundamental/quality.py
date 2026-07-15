@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -26,7 +27,6 @@ class ROEFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 ROE 因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["net_profit", "shareholders_equity"]
@@ -77,7 +77,6 @@ class GrossMarginFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算毛利率因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["revenue", "cost_of_goods_sold"]
@@ -128,7 +127,6 @@ class DebtToEquityFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算资产负债率因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["total_liabilities", "shareholders_equity"]
@@ -179,7 +177,6 @@ class CurrentRatioFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算流动比率因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["current_assets", "current_liabilities"]
@@ -230,7 +227,6 @@ class AssetTurnoverFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算资产周转率因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["revenue", "total_assets"]

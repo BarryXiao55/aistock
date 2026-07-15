@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -26,7 +27,6 @@ class PEFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 PE 因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["close", "eps"]
@@ -77,7 +77,6 @@ class PBFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 PB 因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["close", "bps"]
@@ -128,7 +127,6 @@ class PSFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 PS 因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["market_cap", "revenue"]
@@ -179,7 +177,6 @@ class DividendYieldFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算股息率因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["dividend", "close"]
@@ -230,7 +227,6 @@ class EarningsYieldFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算盈利收益率因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["eps", "close"]

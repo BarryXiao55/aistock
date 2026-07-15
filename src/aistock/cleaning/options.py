@@ -14,13 +14,14 @@ class OptionsCleaner(CleaningStep):
         """执行期权特定清洗"""
         # 1. 标记实值/虚值/平值期权
         if all(col in df.columns for col in ["close", "strike_price", "option_type"]):
+            strike_safe = df["strike_price"].replace(0, float("nan"))
             # 简化计算：使用收盘价和行权价比较
             if "underlying_price" in df.columns:
                 # 有标的价格时精确计算
-                df["moneyness"] = df["underlying_price"] / df["strike_price"]
+                df["moneyness"] = df["underlying_price"] / strike_safe
             else:
                 # 没有标的价格时使用收盘价近似
-                df["moneyness"] = df["close"] / df["strike_price"]
+                df["moneyness"] = df["close"] / strike_safe
 
             # 标记期权状态
             df["option_status"] = "at_the_money"  # 平值

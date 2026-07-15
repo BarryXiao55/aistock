@@ -127,6 +127,11 @@ def fetch(asset_type, schema_name, codes, start_date, end_date, frequency):
         click.echo(f"Invalid asset-type: '{asset_type}'. Must be one of: {', '.join(sorted(valid_asset_types))}", err=True)
         sys.exit(1)
 
+    valid_frequencies = {"daily", "1min", "5min", "15min", "30min", "60min"}
+    if frequency not in valid_frequencies:
+        click.echo(f"Invalid frequency: '{frequency}'. Must be one of: {', '.join(sorted(valid_frequencies))}", err=True)
+        sys.exit(1)
+
     # 解析参数
     try:
         start = datetime.strptime(start_date, "%Y-%m-%d").date()

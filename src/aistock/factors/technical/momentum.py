@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -26,7 +27,6 @@ class Momentum5DFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算5日动量"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:
@@ -73,7 +73,6 @@ class Momentum20DFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算20日动量"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:
@@ -120,7 +119,6 @@ class Momentum60DFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算60日动量"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:
@@ -177,7 +175,6 @@ class MomentumCustomFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算自定义动量"""
-        import time
         start_time = time.time()
 
         # 使用参数覆盖默认窗口

@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -26,7 +27,6 @@ class TurnoverRateFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算换手率"""
-        import time
         start_time = time.time()
 
         # 如果已有 turnover 列，直接使用
@@ -87,7 +87,6 @@ class AmihudFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 Amihud 流动性因子"""
-        import time
         start_time = time.time()
 
         required_cols = ["close", "amount"]
@@ -158,7 +157,6 @@ class VolumeMomentumFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算成交量动量"""
-        import time
         start_time = time.time()
 
         if "volume" not in data.columns:

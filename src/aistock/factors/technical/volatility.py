@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -26,7 +27,6 @@ class Volatility20DFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算20日波动率"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:
@@ -86,7 +86,6 @@ class ATRFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 ATR"""
-        import time
         start_time = time.time()
 
         required_cols = ["high", "low", "close"]
@@ -155,7 +154,6 @@ class RealizedVolatilityFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算已实现波动率"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:

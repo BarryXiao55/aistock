@@ -17,7 +17,8 @@ class ConvertibleBondCleaner(CleaningStep):
             if all(col in df.columns for col in ["close", "conversion_price"]):
                 # 转股价值 = 正股价格 / 转股价格 * 100
                 # 这里使用 close 作为近似正股价格
-                df["conversion_value"] = (df["close"] / df["conversion_price"]) * 100
+                cp_safe = df["conversion_price"].replace(0, float("nan"))
+                df["conversion_value"] = (df["close"] / cp_safe) * 100
 
         # 2. 计算溢价率（如果没有）
         if "premium_rate" not in df.columns:

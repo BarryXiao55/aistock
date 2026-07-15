@@ -57,42 +57,7 @@ class QualityScorer(CleaningStep):
         df["quality_grade"] = self._get_quality_grade(quality_score)
 
         # 记录质量问题
-        issues = []
-        if completeness < 90:
-            issues.append(QualityIssue(
-                dimension="completeness",
-                severity="warning" if completeness >= 70 else "error",
-                description=f"Completeness score: {completeness:.1f}%",
-                affected_rows=int((1 - completeness / 100) * len(df)),
-                suggestion="Check for missing values in critical columns",
-            ))
-
-        if consistency < 90:
-            issues.append(QualityIssue(
-                dimension="consistency",
-                severity="warning" if consistency >= 70 else "error",
-                description=f"Consistency score: {consistency:.1f}%",
-                affected_rows=int((1 - consistency / 100) * len(df)),
-                suggestion="Check for data conflicts or duplicates",
-            ))
-
-        if timeliness < 90:
-            issues.append(QualityIssue(
-                dimension="timeliness",
-                severity="warning" if timeliness >= 70 else "error",
-                description=f"Timeliness score: {timeliness:.1f}%",
-                affected_rows=0,
-                suggestion="Update data to more recent dates",
-            ))
-
-        if accuracy < 90:
-            issues.append(QualityIssue(
-                dimension="accuracy",
-                severity="warning" if accuracy >= 70 else "error",
-                description=f"Accuracy score: {accuracy:.1f}%",
-                affected_rows=int((1 - accuracy / 100) * len(df)),
-                suggestion="Review data validation rules",
-            ))
+        issues = self._build_quality_issues(completeness, consistency, timeliness, accuracy, len(df))
 
         # 记录日志
         ctx.log.info(
@@ -209,6 +174,45 @@ class QualityScorer(CleaningStep):
         else:
             return "D"
 
+    def _build_quality_issues(
+        self, completeness: float, consistency: float, timeliness: float, accuracy: float, total_rows: int
+    ) -> list[QualityIssue]:
+        """根据四维度评分构建质量问题列表"""
+        issues = []
+        if completeness < 90:
+            issues.append(QualityIssue(
+                dimension="completeness",
+                severity="warning" if completeness >= 70 else "error",
+                description=f"Completeness score: {completeness:.1f}%",
+                affected_rows=int((1 - completeness / 100) * total_rows),
+                suggestion="Check for missing values in critical columns",
+            ))
+        if consistency < 90:
+            issues.append(QualityIssue(
+                dimension="consistency",
+                severity="warning" if consistency >= 70 else "error",
+                description=f"Consistency score: {consistency:.1f}%",
+                affected_rows=int((1 - consistency / 100) * total_rows),
+                suggestion="Check for data conflicts or duplicates",
+            ))
+        if timeliness < 90:
+            issues.append(QualityIssue(
+                dimension="timeliness",
+                severity="warning" if timeliness >= 70 else "error",
+                description=f"Timeliness score: {timeliness:.1f}%",
+                affected_rows=0,
+                suggestion="Update data to more recent dates",
+            ))
+        if accuracy < 90:
+            issues.append(QualityIssue(
+                dimension="accuracy",
+                severity="warning" if accuracy >= 70 else "error",
+                description=f"Accuracy score: {accuracy:.1f}%",
+                affected_rows=int((1 - accuracy / 100) * total_rows),
+                suggestion="Review data validation rules",
+            ))
+        return issues
+
     def validate(self, df: pd.DataFrame) -> list[str]:
         """后置校验"""
         issues = []
@@ -255,42 +259,7 @@ class QualityScorer(CleaningStep):
             accuracy * self.accuracy_weight
         )
 
-        issues = []
-        if completeness < 90:
-            issues.append(QualityIssue(
-                dimension="completeness",
-                severity="warning" if completeness >= 70 else "error",
-                description=f"Completeness score: {completeness:.1f}%",
-                affected_rows=int((1 - completeness / 100) * len(df)),
-                suggestion="Check for missing values in critical columns",
-            ))
-
-        if consistency < 90:
-            issues.append(QualityIssue(
-                dimension="consistency",
-                severity="warning" if consistency >= 70 else "error",
-                description=f"Consistency score: {consistency:.1f}%",
-                affected_rows=int((1 - consistency / 100) * len(df)),
-                suggestion="Check for data conflicts or duplicates",
-            ))
-
-        if timeliness < 90:
-            issues.append(QualityIssue(
-                dimension="timeliness",
-                severity="warning" if timeliness >= 70 else "error",
-                description=f"Timeliness score: {timeliness:.1f}%",
-                affected_rows=0,
-                suggestion="Update data to more recent dates",
-            ))
-
-        if accuracy < 90:
-            issues.append(QualityIssue(
-                dimension="accuracy",
-                severity="warning" if accuracy >= 70 else "error",
-                description=f"Accuracy score: {accuracy:.1f}%",
-                affected_rows=int((1 - accuracy / 100) * len(df)),
-                suggestion="Review data validation rules",
-            ))
+        issues = self._build_quality_issues(completeness, consistency, timeliness, accuracy, len(df))
 
         return QualityReport(
             schema_name=schema_name,

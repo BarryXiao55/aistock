@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -36,7 +37,6 @@ class RSIFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 RSI"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:
@@ -114,7 +114,6 @@ class MACDFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 MACD"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:
@@ -190,7 +189,6 @@ class BollingerBandsFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算布林带"""
-        import time
         start_time = time.time()
 
         if "close" not in data.columns:
@@ -272,7 +270,6 @@ class KDJFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 KDJ"""
-        import time
         start_time = time.time()
 
         required_cols = ["high", "low", "close"]

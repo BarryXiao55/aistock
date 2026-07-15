@@ -20,8 +20,8 @@ class Cleaner:
                 df = step.clean(df, ctx)
                 step_issues = step.validate(df)
                 issues.extend(f"[{step.name}] {i}" for i in step_issues)
-            except CleanError:
-                ctx.log.error(f"cleaning step [{step.name}] failed")
+            except (CleanError, KeyError, ValueError, TypeError) as e:
+                ctx.log.error(f"cleaning step [{step.name}] failed: {e}")
                 raise
         return df, issues
 

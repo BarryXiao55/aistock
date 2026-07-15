@@ -5,7 +5,8 @@ from aistock.exceptions import StoreError
 
 def get_backend(config: dict):
     """根据 pipeline.yaml 中 storage.backend 字段创建后端实例"""
-    backend_name = config["storage"]["backend"]
+    storage_cfg = config.get("storage", {})
+    backend_name = storage_cfg.get("backend", "parquet")
     if backend_name == "parquet":
         from aistock.storage.parquet.backend import ParquetBackend
 

@@ -105,7 +105,7 @@ class FactorCache:
 
     def _hash_key(self, key: str) -> str:
         """生成缓存键的哈希值"""
-        return hashlib.md5(key.encode()).hexdigest()
+        return hashlib.sha256(key.encode()).hexdigest()
 
     def cache_decorator(self, ttl: int | None = None):
         """

@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import FactorCalculator, FactorMetadata, FactorResult, FactorCategory, FactorFrequency
 
@@ -33,7 +34,6 @@ class ZScoreNormalizer(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 Z-Score 标准化"""
-        import time
         start_time = time.time()
 
         # 计算原始因子
@@ -96,7 +96,6 @@ class MinMaxNormalizer(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算 MinMax 标准化"""
-        import time
         start_time = time.time()
 
         # 计算原始因子
@@ -159,7 +158,6 @@ class RankNormalizer(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算排名标准化"""
-        import time
         start_time = time.time()
 
         # 计算原始因子

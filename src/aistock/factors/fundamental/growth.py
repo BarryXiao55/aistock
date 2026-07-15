@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import time
 
 from aistock.factors.interface import (
     FactorCalculator, FactorMetadata, FactorResult,
@@ -26,7 +27,6 @@ class RevenueGrowthFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算营收增长率因子"""
-        import time
         start_time = time.time()
 
         if "revenue" not in data.columns:
@@ -79,7 +79,6 @@ class NetProfitGrowthFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算利润增长率因子"""
-        import time
         start_time = time.time()
 
         if "net_profit" not in data.columns:
@@ -131,7 +130,6 @@ class EPSGrowthFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算每股收益增长率因子"""
-        import time
         start_time = time.time()
 
         if "eps" not in data.columns:
@@ -183,7 +181,6 @@ class BookValueGrowthFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算净资产增长率因子"""
-        import time
         start_time = time.time()
 
         if "shareholders_equity" not in data.columns:
@@ -235,7 +232,6 @@ class OperatingCashFlowGrowthFactor(FactorCalculator):
 
     def calculate(self, data: pd.DataFrame, params: dict | None = None) -> FactorResult:
         """计算经营现金流增长率因子"""
-        import time
         start_time = time.time()
 
         if "operating_cash_flow" not in data.columns:

@@ -56,7 +56,8 @@ class FuturesCleaner(CleaningStep):
 
         # 检查结算价与收盘价差异（通常不应太大）
         if "settle" in df.columns and "close" in df.columns:
-            diff_pct = abs(df["settle"] - df["close"]) / df["close"] * 100
+            close_safe = df["close"].replace(0, float("nan"))
+            diff_pct = abs(df["settle"] - df["close"]) / close_safe * 100
             if (diff_pct > 10).any():
                 issues.append("Large difference between settle and close price detected")
 
