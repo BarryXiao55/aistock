@@ -295,5 +295,81 @@ def status():
     click.echo("=" * 80)
 
 
+@cli.command()
+@click.argument("keyword")
+@click.option("--limit", default=20, help="Max results to return")
+def search(keyword, limit):
+    """Search stocks by name or code (e.g. '贵州茅台' or '600519')"""
+    try:
+        import baostock as bs
+    except ImportError:
+        click.echo("Error: baostock package required. Install with: pip install baostock", err=True)
+        sys.exit(1)
+
+    login_result = bs.login()
+    if login_result.error_code != '0':
+        click.echo(f"Baostock login failed: {login_result.error_msg}", err=True)
+        sys.exit(1)
+
+    try:
+        # 获取股票列表
+        rs = bs.query_stock_basic()
+        if rs.error_code != '0':
+            click.echo(f"Query failed: {rs.error_msg}", err=True)
+            sys.exit(1)
+
+        data_list = []
+        while (rs.error_code == '0') and rs.next():
+            data_list.append(rs.get_row_data())
+
+        if not data_list:
+            click.echo("No stock data found.")
+            return
+
+        df = __import__("pandas").DataFrame(data_list, columns=rs.fields)
+
+        # 统一代码格式: sh.600519 -> 600519.SH
+        def unify_code(bs_code: str) -> str:
+            if "." in bs_code:
+                parts = bs_code.split(".")
+                return f"{parts[1]}.{parts[0].upper()}"
+            return bs_code
+
+        df["code"] = df["code"].apply(unify_code)
+
+        # 搜索: 按名称或代码模糊匹配
+        keyword_lower = keyword.lower()
+        mask = df["code_name"].str.contains(keyword, case=False, na=False) | \
+               df["code"].str.contains(keyword_lower, case=False, na=False)
+        results = df[mask].head(limit)
+
+        if results.empty:
+            click.echo(f"No results found for '{keyword}'.")
+            return
+
+        # 输出结果
+        click.echo(f"\nSearch results for '{keyword}' ({len(results)} found):\n")
+        click.echo(f"{'Code':<15} {'Name':<20} {'Type':<10} {'Status':<10}")
+        click.echo("-" * 55)
+
+        for _, row in results.iterrows():
+            code = row.get("code", "")
+            name = row.get("code_name", "")
+            # code_type: 1=股票, 2=指数, ...
+            code_type = row.get("type", "")
+            type_map = {"1": "Stock", "2": "Index", "3": "ETF", "4": "Bond"}
+            type_str = type_map.get(code_type, code_type)
+
+            status = row.get("status", "")
+            status_str = "Listed" if status == "1" else "Delisted" if status == "0" else status
+
+            click.echo(f"{code:<15} {name:<20} {type_str:<10} {status_str:<10}")
+
+        click.echo()
+
+    finally:
+        bs.logout()
+
+
 if __name__ == "__main__":
     cli()
