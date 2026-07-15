@@ -77,7 +77,8 @@ class TestFactorMetadata:
         d = metadata.to_dict()
         assert d["name"] == "test_factor"
         assert d["category"] == "technical"
-        assert d["tags"] == ["test"]
+        # tags 被转换为字符串格式（Parquet 兼容性）
+        assert "test" in d["tags"]
 
 
 class TestFactorResult:
