@@ -118,8 +118,10 @@ class ParquetBackend(StorageBackend):
 
             return df
 
-        except Exception as e:
+        except (FileNotFoundError, PermissionError) as e:
             raise BackendUnavailable(f"Failed to read from Parquet: {e}") from e
+        except Exception as e:
+            raise BackendUnavailable(f"Failed to read from Parquet: {type(e).__name__}: {e}") from e
 
     def upsert(
         self,

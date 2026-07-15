@@ -73,9 +73,12 @@ class PipelineRunner:
 
                 # 5. 判断成功/部分成功
                 if spec.codes is not None:
-                    requested = set(spec.codes)
-                    actual = set(df["code"].unique())
-                    failed_codes = sorted(requested - actual)
+                    if df.empty or "code" not in df.columns:
+                        failed_codes = sorted(spec.codes)
+                    else:
+                        requested = set(spec.codes)
+                        actual = set(df["code"].unique())
+                        failed_codes = sorted(requested - actual)
                 else:
                     failed_codes = []
 
@@ -112,11 +115,13 @@ class PipelineRunner:
     @staticmethod
     def _find_invalid_rows_mask(df: pd.DataFrame, schema: type) -> pd.Series:
         """定位脏行的布尔 mask"""
-        result = pd.Series(False, index=df.index)
         required = {"code", "trade_date", "open", "high", "low", "close", "volume", "amount"}
         missing = required - set(df.columns)
         if missing:
-            return result
+            # 缺少关键列，所有行视为无效
+            return pd.Series(True, index=df.index)
+
+        result = pd.Series(False, index=df.index)
         result |= df["high"] < df["low"]
         result |= (df[["open", "high", "low", "close"]] < 0).any(axis=1)
         result |= df["volume"] < 0

@@ -120,7 +120,7 @@ class QualityScorer(CleaningStep):
                 timeliness = 100.0 - (delay_days / 60) * 100
 
             return min(100.0, max(0.0, timeliness))
-        except Exception:
+        except (ValueError, TypeError):
             return 100.0
 
     def _calculate_accuracy(self, df: pd.DataFrame) -> float:

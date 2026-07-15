@@ -40,10 +40,7 @@ class BaoStockSource(SourceNode):
 
         for code in codes:
             try:
-                # 统一代码格式
-                bs_code = self._client._convert_code(code)
-
-                # 调用 API
+                # 调用 API (get_stock_daily 内部会转换代码格式)
                 df = self._client.get_stock_daily(
                     code=code,
                     start_date=spec.start_date.strftime("%Y-%m-%d"),
